@@ -1,0 +1,20 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-07-22T11:41:23+08:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Project Background",
+      "author": [],
+      "contents": "\r\n\r\nIn the fictional land of Kronos, the company GAStech has reported missing employees with the environmental activist group known as Protectors of Kronos has been suspected to be behind the disappearances. To help the local authorities, the GPS data of employees as well as purchase historical data of the local businesses using employee loyalty cards and credit cards has been handed over to find leads that might help with the case.\r\n\r\n\r\nAs the data visualization expert called upon to help with the case, this report was created as a result of the investigation. This report documents the objective, literature review, proposed methodology, visualization and insights acquired from the data given.\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-07-22T12:34:06+08:00"
+    }
+  ],
+  "collections": []
+}

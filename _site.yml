@@ -1,0 +1,24 @@
+name: "VAST-assignment"
+title: "Assignment Website"
+description: |
+  Assignment Website
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Background"
+      href: index.html
+    - text: "Literature Review"
+      href: about.html
+    - text: "Methodology"
+      href: about.html
+    - text: "Q1"
+      href: about.html
+    - text: "Q2"
+      href: about.html
+    - text: "Q3"
+      href: about.html
+    - text: "Q4"
+      href: about.html
+    - text: "Q5"
+      href: about.html
+output: distill::distill_article
