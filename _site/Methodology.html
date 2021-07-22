@@ -2124,7 +2124,7 @@ To begin with, this part will utilize the “cc_data” and “loyalty_data” c
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cc</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"_site/Methodology_files/cc_data.csv"</span><span class='op'>)</span>
-<span class='va'>loy</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"_site/Methodology_files/loyalty_data.csv"</span><span class='op'>)</span>
+<span class='va'>loyalty</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"_site/Methodology_files/loyalty_data.csv"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>cc</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div></li>
@@ -2143,7 +2143,7 @@ To begin with, this part will utilize the “cc_data” and “loyalty_data” c
   .. )
 NULL</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>loy</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>loyalty</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>spec_tbl_df [1,392 x 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
@@ -2160,7 +2160,72 @@ NULL</code></pre>
   .. )
 NULL</code></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>
+As can be seen above, the first thing needed to be fixed is the timestamp columns of each dataframe since they are still reported as “character” instead of a “datetime” format. This is done by extracting the date using the “date_time_parse” function from the “clock” library.
+</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cc</span><span class='op'>$</span><span class='va'>timestamp</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://clock.r-lib.org/reference/date-time-parse.html'>date_time_parse</a></span><span class='op'>(</span><span class='va'>cc</span><span class='op'>$</span><span class='va'>timestamp</span>,zone <span class='op'>=</span> <span class='st'>""</span>, format <span class='op'>=</span> <span class='st'>"%m/%d/%Y %H:%M"</span><span class='op'>)</span>
+<span class='va'>loyalty</span><span class='op'>$</span><span class='va'>timestamp</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://clock.r-lib.org/reference/date-time-parse.html'>date_time_parse</a></span><span class='op'>(</span><span class='va'>loyalty</span><span class='op'>$</span><span class='va'>timestamp</span>,zone <span class='op'>=</span> <span class='st'>""</span>, format <span class='op'>=</span> <span class='st'>"%m/%d/%Y"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>cc</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>spec_tbl_df [1,490 x 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ timestamp : POSIXct[1:1490], format: &quot;2014-01-06 07:28:00&quot; ...
+ $ location  : chr [1:1490] &quot;Brew&#39;ve Been Served&quot; &quot;Hallowed Grounds&quot; &quot;Brew&#39;ve Been Served&quot; &quot;Hallowed Grounds&quot; ...
+ $ price     : num [1:1490] 11.34 52.22 8.33 16.72 4.24 ...
+ $ last4ccnum: num [1:1490] 4795 7108 6816 9617 7384 ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   timestamp = col_character(),
+  ..   location = col_character(),
+  ..   price = col_double(),
+  ..   last4ccnum = col_double()
+  .. )
+NULL</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>loyalty</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>spec_tbl_df [1,392 x 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ timestamp : POSIXct[1:1392], format: &quot;2014-01-06&quot; ...
+ $ location  : chr [1:1392] &quot;Brew&#39;ve Been Served&quot; &quot;Brew&#39;ve Been Served&quot; &quot;Hallowed Grounds&quot; &quot;Coffee Shack&quot; ...
+ $ price     : num [1:1392] 4.17 9.6 16.53 11.51 12.93 ...
+ $ loyaltynum: chr [1:1392] &quot;L2247&quot; &quot;L9406&quot; &quot;L8328&quot; &quot;L6417&quot; ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   timestamp = col_character(),
+  ..   location = col_character(),
+  ..   price = col_double(),
+  ..   loyaltynum = col_character()
+  .. )
+NULL</code></pre>
+</div>
+<ol start="2" type="1">
+<li>Create new dataframes
+<p>
+The heatmap is planned to analyze a combination of credit cards, loyalty cards, number of transactions and revenue. As such different dataframes must be prepared in order to successfully visualize all aspects.
+</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r">
+<code class="sourceCode r"><span class="co">## Extract hour row from cc data</span></li>
+</ol>
+<p><span class="va">cc</span><span class="op"><span class="math inline">\(&lt;/span&gt;&lt;span class=&#39;va&#39;&gt;H&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#39;fu&#39;&gt;&lt;a href=&#39;https://rdrr.io/r/base/format.html&#39;&gt;format&lt;/a&gt;&lt;/span&gt;&lt;span class=&#39;op&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;va&#39;&gt;cc&lt;/span&gt;&lt;span class=&#39;op&#39;&gt;\)</span></span><span class="va">timestamp</span>, format<span class="op">=</span><span class="st">‘%H’</span><span class="op">)</span></p>
+<p><span class="co">## Create only mdy column in cc for matching with loyalty</span></p>
+<p><span class="va">cc</span><span class="op"><span class="math inline">\(&lt;/span&gt;&lt;span class=&#39;va&#39;&gt;mdy&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#39;fu&#39;&gt;&lt;a href=&#39;https://rdrr.io/r/base/format.html&#39;&gt;format&lt;/a&gt;&lt;/span&gt;&lt;span class=&#39;op&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;va&#39;&gt;cc&lt;/span&gt;&lt;span class=&#39;op&#39;&gt;\)</span></span><span class="va">timestamp</span>, format <span class="op">=</span> <span class="st">“%m/%d/%Y”</span><span class="op">)</span> <span class="va">cc</span><span class="op"><span class="math inline">\(&lt;/span&gt;&lt;span class=&#39;va&#39;&gt;mdy&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#39;fu&#39;&gt;&lt;a href=&#39;https://clock.r-lib.org/reference/date-time-parse.html&#39;&gt;date_time_parse&lt;/a&gt;&lt;/span&gt;&lt;span class=&#39;op&#39;&gt;(&lt;/span&gt;&lt;span class=&#39;va&#39;&gt;cc&lt;/span&gt;&lt;span class=&#39;op&#39;&gt;\)</span></span><span class="va">mdy</span>,zone <span class="op">=</span> <span class="st">""</span>,format <span class="op">=</span> <span class="st">“%m/%d/%Y”</span><span class="op">)</span></p>
+<p><span class="co">## Extract transactions that use loyalty card but not CC using dplyr</span></p>
+<p><span class="va">loy_only</span> <span class="op">&lt;-</span> <span class="fu"><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>anti_join</a></span><span class="op">(</span><span class="va">loyalty</span>,<span class="va">cc</span>,by<span class="op">=</span><span class="fu"><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class="op">(</span><span class="st">“location”</span>,<span class="st">“price”</span>,<span class="st">“timestamp”</span><span class="op">=</span><span class="st">“mdy”</span><span class="op">)</span><span class="op">)</span></p>
+<p><span class="co">## Extract transactions that use cc only</span></p>
+<p><span class="va">cc_only</span> <span class="op">&lt;-</span> <span class="fu"><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>anti_join</a></span><span class="op">(</span><span class="va">cc</span>,<span class="va">loyalty</span>,by<span class="op">=</span><span class="fu"><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class="op">(</span><span class="st">“location”</span>,<span class="st">“price”</span>,<span class="st">“mdy”</span><span class="op">=</span><span class="st">“timestamp”</span><span class="op">)</span><span class="op">)</span></p>
+<p><span class="co">## Create transactions that use both</span></p>
+<p><span class="va">cc_loy_union</span> <span class="op">&lt;-</span> <span class="fu"><a href='https://rdrr.io/r/base/merge.html'>merge</a></span><span class="op">(</span><span class="va">cc</span>,<span class="va">loyalty</span>,by.x<span class="op">=</span><span class="fu"><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class="op">(</span><span class="st">“location”</span>,<span class="st">“price”</span>,<span class="st">“mdy”</span><span class="op">)</span>,by.y<span class="op">=</span><span class="fu"><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class="op">(</span><span class="st">“location”</span>,<span class="st">“price”</span>,<span class="st">“timestamp”</span><span class="op">)</span>,all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></p>
+<span class="va">cc_loy_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class="op">(</span><span class="va">cc_loy_union</span><span class="op">)</span> <span class="fu"><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span><span class="op">(</span><span class="va">cc_loy_clean</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> </code>
+</pre>
+</div>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -2168,6 +2233,15 @@ NULL</code></pre>
 <div class="d-appendix">
 </div>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->

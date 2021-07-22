@@ -13,6 +13,7 @@ knitr::opts_knit$set("_site/Methodology_files")
 library(dplyr)
 library(knitr)
 library(tidyverse)
+library(clock)
 ```
 
 <h2> Methodology </h2>
@@ -43,10 +44,48 @@ To begin with, this part will utilize the "cc_data" and "loyalty_data" csv files
 1. Incorrect data formats
 ```{r,echo=TRUE}
 cc <- read_csv("_site/Methodology_files/cc_data.csv")
-loy <- read_csv("_site/Methodology_files/loyalty_data.csv")
+loyalty <- read_csv("_site/Methodology_files/loyalty_data.csv")
 print(str(cc))
-print(str(loy))
+print(str(loyalty))
 ```
-As can be seen above, the first thing needed to be fixed is the timestamp columns of each dataframe since they are still reported as "character" instead of a "datetime" format. This is done by extracting the date using the "clock" library.
+<p>
+As can be seen above, the first thing needed to be fixed is the timestamp columns of each dataframe since they are still reported as "character" instead of a "datetime" format. This is done by extracting the date using the "date_time_parse" function from the "clock" library.
+</p>
+```{r,echo=TRUE}
+cc$timestamp <-  date_time_parse(cc$timestamp,zone = "", format = "%m/%d/%Y %H:%M")
+loyalty$timestamp <-  date_time_parse(loyalty$timestamp,zone = "", format = "%m/%d/%Y")
 
+print(str(cc))
+print(str(loyalty))
+```
+2. Create new dataframes
+<p>
+The heatmap is planned to analyze a combination of credit cards, loyalty cards, number of transactions and revenue. As such different dataframes must be prepared in order to successfully visualize all aspects.
+</p>
+```{r,echo=TRUE}
+## Extract hour row from cc data
+
+
+cc$H <-  format(cc$timestamp, format='%H')
+
+## Create only mdy column in cc for matching with loyalty
+
+cc$mdy <- format(cc$timestamp, format = "%m/%d/%Y")
+cc$mdy <- date_time_parse(cc$mdy,zone = "",format = "%m/%d/%Y")
+
+## Extract transactions that use loyalty card but not CC using dplyr
+
+loy_only <-  anti_join(loyalty,cc,by=c("location","price","timestamp"="mdy"))
+
+## Extract transactions that use cc only
+
+cc_only <- anti_join(cc,loyalty,by=c("location","price","mdy"="timestamp"))
+
+## Create transactions that use both
+
+cc_loy_union <- merge(cc,loyalty,by.x=c("location","price","mdy"),by.y=c("location","price","timestamp"),all=TRUE)
+
+cc_loy_clean <-  na.omit(cc_loy_union)
+row.names(cc_loy_clean) <- NULL
+```
 
