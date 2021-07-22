@@ -86,29 +86,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>Assignment Website: About this site</title>
+  <title>Assignment Website: Literature Review</title>
 
-  <meta property="description" itemprop="description" content="Some additional details about the website"/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Assignment Website: About this site"/>
+  <meta property="og:title" content="Assignment Website: Literature Review"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Some additional details about the website"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Assignment Website"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Assignment Website: About this site"/>
-  <meta property="twitter:description" content="Some additional details about the website"/>
+  <meta property="twitter:title" content="Assignment Website: Literature Review"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About this site"]},{"type":"character","attributes":{},"value":["Some additional details about the website"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title"]}},"value":[{"type":"character","attributes":{},"value":["Literature Review"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2053,7 +2050,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"About this site","description":"Some additional details about the website","authors":[]}
+{"title":"Literature Review","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2064,7 +2061,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <a href="index.html" class="title">Assignment Website</a>
 </div>
 <div class="nav-right">
-<a href="index.html">Background</a>
+<a href="index.html">Introduction</a>
 <a href="about.html">Literature Review</a>
 <a href="about.html">Methodology</a>
 <a href="about.html">Q1</a>
@@ -2081,14 +2078,44 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>About this site</h1>
+<h1>Literature Review</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Some additional details about the website</p></p>
+
 </div>
 
 
 <div class="d-article">
+<p>
+On how to tackle the listed objectives, some research was done from the previous VAST challenge that used the same dataset which was in 2014. Of the submissions found and analyzed, the submission conducted by <a href="https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC2%20-%20Patterns%20of%20Life%20Analysis/entries/University%20of%20California,%20Davis/" title="VAST Challenge Repository">Kevin Griffin of University of California, Davis</a> was chosen as a good foundation on how to move forward.
+</p>
+<h2>
+What is Relevant for this Report?
+</h2>
+<p>
+What Griffin did was to analyze the movements of each employee and connect the dots to find meaningful insights relevant to the questions asked. However, Considering the number of employees tracked as well as the dates ranging up to 2 weeks with different times. It will be a challenging task to graph and analyze all movement in that way without a dynamic filtering system that could plot the movements, which is exactly what griffin did in his submission using a custom software. This method would be an ideal solution to the assignment’s 2nd objective if such a dynamic filtering is applicable in the required medium which is R markdown.
+</p>
+<p>
+From the movement patterns, insights can also be obtained to how the employees’ relationships are with each other, relating to the 4th objective. While not discussed in the 2014 papers, the acquired information could then be built upon by incorporating a network graph to fully answer the objective.
+</p>
+<p>
+As for the 3rd objective, the submission’s answer to how the author solved data inconsistencies can be used. The author decided to match the movements of employees with purchase data based on the time similarities. Such a way can also be done to answer this objective.
+</p>
+<h2>
+How to Adapt
+</h2>
+<p>
+This sub-section will mainly focus on how to do the second objective, which is the movement of employees.
+</p>
+<p>
+While trying to individually analyze movements of employees is a step in a right direction, doing it in R would be a challenge. Griffin uses a custom-made software that is able to dynamically filter out data from the plot, while such an option is not available for R Markdown.
+</p>
+<p>
+The thing that comes closest to this would be the library “crosstalk”, which allows a more R shiny-like interaction to filter out data in plots. However, it is still an experimental library with the biggest downside of plotting everything in the dataframe first then filter out what is unneeded. Such a downside would be fine with a dataframe of 100 rows but not ~190000 rows which this project is dealing with.
+</p>
+<p>
+Enter the submission from <a href="https://www.youtube.com/watch?v=THLB7JKYThM&amp;t=96s" title="YouTube">University of Konstanz</a>. What that team did was to instead reduce the data needed into points where the analysis will only look at the end points of each trip made by the employees. This reduction causes the analysis made from 190000 rows into ~2000, giving more ease into computation power. How to identify the start and end points will be explained in the <a href="">Methodology</a> section.
+</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
