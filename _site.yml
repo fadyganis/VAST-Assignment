@@ -10,7 +10,7 @@ navbar:
     - text: "Literature Review"
       href: about.html
     - text: "Methodology"
-      href: about.html
+      href: Methodology.html
     - text: "Q1"
       href: about.html
     - text: "Q2"

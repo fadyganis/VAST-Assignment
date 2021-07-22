@@ -1,0 +1,50 @@
+---
+title: "Methodology & Data Preparation"
+site: distill::distill_website
+toc: TRUE
+toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set("_site/Methodology_files")
+
+library(dplyr)
+library(knitr)
+library(tidyverse)
+```
+
+<h2> Methodology </h2>
+
+<p>
+With the objectives sorted out as well as, the way to solve each problem can be planned in advanced by visualizing the following graphs.
+</p>
+
+<p>
+1.	Heatmap of businesses by each period, this would highlight popular places in a timeframe based on the number of transactions happening.
+2.	A map of the region with points showing the start and end point of each trip would give meaning to the popularity of the places as well as could find new leads regarding the routines of each employee.
+3.	The combination of the loyalty card data as well as the routine of the employees acquired from the vehicle data would give a possibility of which card belonging to which employee. However, multiple employees in the same place at the same time would make this impossible. 
+4.	Network graph to show non-professional relationships between employees.
+5.	A combination of the above visualizations would be enough to infer any suspicious activities done by the employees. Therefore, no additional visualizations would be needed.
+</p>
+
+<h2> Data Preparation </h2>
+
+<p>
+To start the investigation, the dataset must first be prepared to be able to be properly plotted which will be discussed in this sub-section.
+</p>
+
+<h3> Transaction Heatmap </h3>
+<p>
+To begin with, this part will utilize the "cc_data" and "loyalty_data" csv files. Some problems found and how it is solved are listed below.
+</p>
+
+1. Incorrect data formats
+```{r,echo=TRUE}
+cc <- read_csv("_site/Methodology_files/cc_data.csv")
+loy <- read_csv("_site/Methodology_files/loyalty_data.csv")
+print(str(cc))
+print(str(loy))
+```
+
