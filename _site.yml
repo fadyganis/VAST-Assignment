@@ -12,7 +12,7 @@ navbar:
     - text: "Methodology"
       href: Methodology.html
     - text: "Q1"
-      href: about.html
+      href: Q1.html
     - text: "Q2"
       href: about.html
     - text: "Q3"
