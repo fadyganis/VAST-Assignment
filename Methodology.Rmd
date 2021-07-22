@@ -43,8 +43,8 @@ To begin with, this part will utilize the "cc_data" and "loyalty_data" csv files
 
 1. Incorrect data formats
 ```{r,echo=TRUE}
-cc <- read_csv("_site/Methodology_files/cc_data.csv")
-loyalty <- read_csv("_site/Methodology_files/loyalty_data.csv")
+cc <- read.csv("_site/Methodology_files/cc_data.csv")
+loyalty <- read.csv("_site/Methodology_files/loyalty_data.csv")
 print(str(cc))
 print(str(loyalty))
 ```
@@ -89,3 +89,35 @@ cc_loy_clean <-  na.omit(cc_loy_union)
 row.names(cc_loy_clean) <- NULL
 ```
 
+<p>
+Once the dataframes has been created, the plotting follows the same code chunk shown below.
+</p>
+```{r,echo=TRUE}
+library(viridis)
+library(ggplot2)
+library(hrbrthemes)
+library(plotly)
+
+x <- paste("H",seq(0,23),sep="")
+y <- sort(unique(cc$location))
+data <- expand.grid(X=x, Y=y)
+data$H <- seq(0,23)
+
+for(i in 1:nrow(data)){
+  data$Z[i] =  nrow(cc_loy_clean[cc_loy_clean$location == data$Y[i] 
+                                 & cc_loy_clean$H == data$H[i],])
+}
+
+data <- data %>%
+  mutate(text = paste0("Hour: ", X, "\n","Location: ", Y, "\n","Number of Transactions: ", Z, "\n"))
+
+p <- ggplot(data, aes(X, Y, fill= Z,text=text)) + 
+  geom_tile() +
+  scale_fill_viridis(discrete=FALSE) +
+  theme_ipsum()
+
+plot1 <- ggplotly(p, tooltip="text")
+```
+```{r,echo=FALSE,layout="1-body-outset",fig.height=7}
+plot1
+```
