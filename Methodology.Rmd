@@ -121,3 +121,11 @@ plot1 <- ggplotly(p, tooltip="text")
 ```{r,echo=FALSE,layout="1-body-outset",fig.height=7}
 plot1
 ```
+
+<h3> GPS Movements </h3>
+
+<p>
+Tracking the GPS movements is a more demanding task considering the sheer size of the dataset. However, as discussed in the methodology, only the start and endpoint will be considered for plotting. This section will discuss how to filter said data as well as how to plot the data on top of an overlay image of the map of Kronos.
+</p>
+
+<h4> Filter Only Start and End Points </h4>
