@@ -13,6 +13,7 @@ library(viridis)
 library(hrbrthemes)
 library(plotly)
 library(clock)
+library(DT)
 cc <- read.csv("_site/Methodology_files/cc_data.csv")
 cc_loy_clean <- read.csv("_site/Methodology_files/cc_loy_clean.csv")
 cc_loy_union <- read.csv("_site/Methodology_files/cc_loy_union.csv")
@@ -103,7 +104,7 @@ abilaZ_filt <- cc_loy_union %>% filter(is.na(H)==TRUE & location == "Abila Zacha
 
 abilaZ_filt <- abilaZ_filt[c("location","price","mdy","loyaltynum")]
 
-abilaZ_filt
+datatable(abilaZ_filt)
 
 ```
 <p>
@@ -157,10 +158,10 @@ GenGroc <- cc_loy_union %>% filter(location == "General Grocer" & price == 477.6
 GenGroc <- GenGroc[c("location","price","mdy","last4ccnum","loyaltynum")]
 Natref <- cc_loy_union %>% filter(location == "Nationwide Refinery"&price==204.58)
 Natref <- Natref[c("location","price","mdy","last4ccnum","loyaltynum")]
-Frydos
-Albert
-GenGroc
-Natref
+datatable(Frydos)
+datatable(Albert)
+datatable(GenGroc)
+datatable(Natref)
 
 ```
 
