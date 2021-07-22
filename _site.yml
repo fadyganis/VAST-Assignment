@@ -5,7 +5,7 @@ description: |
 output_dir: "_site"
 navbar:
   right:
-    - text: "Background"
+    - text: "Introduction"
       href: index.html
     - text: "Literature Review"
       href: about.html

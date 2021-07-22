@@ -1,5 +1,5 @@
 ---
-title: "Project Background"
+title: "Project Introduction"
 site: distill::distill_website
 ---
 
@@ -10,9 +10,25 @@ knitr::opts_chunk$set(echo = FALSE)
 # https://rstudio.github.io/distill/website.html
 
 ```
+<h2> Background </h2>
+
 <p>
 In the fictional land of Kronos, the company GAStech has reported missing employees with the environmental activist group known as Protectors of Kronos has been suspected to be behind the disappearances.  To help the local authorities, the GPS data of employees as well as purchase historical data of the local businesses using employee loyalty cards and credit cards has been handed over to find leads that might help with the case. 
 </p>
 <p>
 As the data visualization expert called upon to help with the case, this report was created as a result of the investigation. This report documents the objective, literature review, proposed methodology, visualization and insights acquired from the data given.
 </p>
+
+<h2> Objective </h2>
+
+<p>
+For this report, the data and questions uses the same data and questions as published in the VAST Data Visualization 2021 - Mini Challenge 2. For the challenge, as said in the background, the main objective is to find any suspicious activities that may relate to the disappearances of the GAStech employees. As such, the objective can then be listed as follow:
+</p>
+
+<p>
+1.	By using the credit and loyalty card data, identify the place and time of the most popular locations. In addition, highlight any anomalies found and give suggestions to correct the anomalies.
+2.	By adding the vehicle GPS data, explain if the anomalies found in the first objective change.
+3.	Infer which credit card belongs to which employee.
+4.	Identify any informal or unofficial relationships among GAStech employees.
+5.	Report any evidence of suspicious activities.
+</P>
