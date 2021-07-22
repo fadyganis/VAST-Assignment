@@ -47,4 +47,6 @@ loy <- read_csv("_site/Methodology_files/loyalty_data.csv")
 print(str(cc))
 print(str(loy))
 ```
+As can be seen above, the first thing needed to be fixed is the timestamp columns of each dataframe since they are still reported as "character" instead of a "datetime" format. This is done by extracting the date using the "clock" library.
+
 
