@@ -8,9 +8,66 @@ output: distill::distill_article
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(viridis)
+library(hrbrthemes)
+library(plotly)
+
+cc <- read.csv("_site/Methodology_files/cc_data.csv")
+cc_loy_clean <- read.csv("_site/Methodology_files/cc_loy_clean.csv")
+cc_loy_union <- read.csv("_site/Methodology_files/cc_loy_union.csv")
 ```
 
+<p>
+When analyzing the popularity of locations, the first thing to do is to look at the union of all transactions both by date and by hour.
+</p>
+
+```{r, echo=FALSE}
+x <- paste("H",seq(0,23),sep="")
+y <- sort(unique(cc_loy_union$location))
+data <- expand.grid(X=x, Y=y)
+data$H <- seq(0,23)
+
+for(i in 1:nrow(data)){
+  data$Z[i] =  nrow(cc_loy_union[cc_loy_union$location == data$Y[i] 
+                                 & cc_loy_union$H == data$H[i],])
+}
+
+data <- data[c("X","Y","Z")]
+
+data <- data %>%
+  mutate(text = paste0("Hour: ", X, "\n","Location: ", Y, "\n","Number of Transactions: ", Z, "\n"))
 
 
+p <- ggplot(data, aes(X, Y, fill= Z,text=text)) + 
+  geom_tile() +
+  scale_fill_viridis() +
+  theme_ipsum()
+```
 
+```{r,echo=FALSE,layout="1-body-outset",fig.height=7}
+ggplotly(p,tooltip = "text")
+```
+```{r, echo=FALSE}
+xx <-  sort(unique(cc_loy_union$mdy))
+yy <-  sort(unique(cc_loy_union$location))
+data2 <- expand.grid(X=xx, Y=yy)
+for(i in 1:nrow(data2)){
+  data2$Z[i] =  nrow(cc_loy_union[cc_loy_union$location == data2$Y[i] & cc_loy_union$mdy == data2$X[i],])
+}
+
+data2 <- data2 %>%
+  mutate(text = paste0("Date: ", X, "\n","Location: ", Y, "\n","Number of Transactions: ", Z, "\n"))
+p2 <- ggplot(data2, aes(X, Y, fill= Z,text=text)) + 
+  geom_tile() +
+  scale_fill_viridis(discrete=FALSE) +
+  theme_ipsum()
+```
+
+```{r,echo=FALSE,layout="1-body-outset",fig.height=7}
+ggplotly(p2,tooltip = "text")
+```
+<p>
+Simply looking at the 2 heatmaps first, some obvious patterns appear which is f&b services busy during mornings, lunch times and evenings. However, there are also some anomalies found which are listed below.
+</p>
 
