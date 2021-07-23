@@ -139,7 +139,6 @@ To start, the dataset is first imported.
 
 ```{r,echo=TRUE}
 gps <- read.csv("_site/gps.csv")
-nrow(gps)
 glimpse(gps)
 ```
 

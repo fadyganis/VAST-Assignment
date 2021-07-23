@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+description: |
+  A new article created using the Distill format.
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(knitr)
+library(tidyverse)
+library(clock)
+library(raster)
+library(sf)
+library(DT)
+library(tmap)
+```
+
+<p>
+To begin with, the plot is shown below for all movements throughout the 2 weeks of dataset.
+</p>
+
+```{r}
+gps <- read.csv("_site/gps.csv")
+gps$Timestamp <- date_time_parse(gps$Timestamp, zone = "", format = "%m/%d/%Y %H:%M:%S")
+gps_sf = st_as_sf(gps, coords = c("long","lat"), crs = 4326)
+gps_sf2 <-  arrange(gps_sf,id,Timestamp)
+x <- 0
+for(i in 2:(nrow(gps_sf2)-1)){
+  if(difftime(gps_sf2$Timestamp[i+1],gps_sf2$Timestamp[i],units = "mins") < 0.5 &
+     difftime(gps_sf2$Timestamp[i],gps_sf2$Timestamp[i-1],units = "mins")
+     < 0.5 & gps_sf2$id[i] == gps_sf2$id[i+1] & gps_sf2$id[i] == gps_sf2$id[i-1]){
+    x <- c(x,i)
+  }
+}
+gps_sf2 <- gps_sf2[-x,]
+row.names(gps_sf2) <- NULL
+
+car <- read.csv("_site/car-assignments.csv")
+car$Name <- paste(car$FirstName,car$LastName,sep=" ")
+
+for(x in 1:nrow(gps_sf2)){
+  ifelse(gps_sf2$id[x] %in% car$CarID == TRUE,
+         {gps_sf2$Name[x] <- car$Name[which(car$CarID == gps_sf2$id[x])];
+         gps_sf2$Position[x] <- car$CurrentEmploymentTitle[which(car$CarID == gps_sf2$id[x])];
+         gps_sf2$Department[x] <- car$CurrentEmploymentType[which(car$CarID == gps_sf2$id[x])]},
+         {gps_sf2$Name[x] <- paste("Truck",gps_sf2$id[x],sep=" ");
+         gps_sf2$Position[x] <- paste("Truck",gps_sf2$id[x],sep=" ");
+         gps_sf2$Department[x] <-paste("Truck",gps_sf2$id[x],sep=" ")})}
+
+bgmap <- raster('_site/MC2-tourist.tif')
+tmap_mode("view")
+
+tm_shape(bgmap)+
+tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+tm_shape(gps_sf2) + tm_dots(col="Name") + tmap_options(max.categories = 50)
+```
+
+
