@@ -14,6 +14,10 @@ library(dplyr)
 library(knitr)
 library(tidyverse)
 library(clock)
+library(raster)
+library(sf)
+library(DT)
+library(tmap)
 ```
 
 <h2> Methodology </h2>
@@ -129,3 +133,90 @@ Tracking the GPS movements is a more demanding task considering the sheer size o
 </p>
 
 <h4> Filter Only Start and End Points </h4>
+
+<p>
+To start, the dataset is first imported.
+</p>
+
+```{r,echo=TRUE}
+gps <- read.csv("_site/Methodology_files/gps.csv")
+nrow(gps)
+glimpse(gps)
+```
+
+<p>
+The "Timestamp" column is shown still in "character" and will be changed into datetime.
+</p>
+```{r,echo=TRUE}
+gps$Timestamp <- date_time_parse(gps$Timestamp, zone = "", format = "%m/%d/%Y %H:%M:%S")
+glimpse(gps)
+```
+<p>
+The latitude and longitude coordinates are also then combined to a single column by changing the dataframe into a shapefile suitable for plotting using the library "sf".
+</p>
+```{r,echo=TRUE}
+gps_sf = st_as_sf(gps, coords = c("long","lat"), crs = 4326)
+```
+<p>
+Before the data can be extracted by start and endpoint, the dataframe must first be sorted by id and time for the extraction code to work.
+</p>
+
+```{r,echo=TRUE}
+gps_sf2 <-  arrange(gps_sf,id,Timestamp)
+```
+<p>
+The above code chunk would sort the dataframe by id first and then by timestamp. Once that is done the start and end point is filtered by checking the difference between each timestamp interval. 
+</p>
+<p>
+To elaborate, the GPS data records the data every few seconds. As such, a trip would mean that the start to end point will have a difference of minutes. Therefore the points can be determined using the following code.
+</p>
+```{r,echo=TRUE}
+x <- 0
+for(i in 2:(nrow(gps_sf2)-1)){
+  if(difftime(gps_sf2$Timestamp[i+1],gps_sf2$Timestamp[i],units = "mins") < 0.5 &
+     difftime(gps_sf2$Timestamp[i],gps_sf2$Timestamp[i-1],units = "mins")
+     < 0.5 & gps_sf2$id[i] == gps_sf2$id[i+1] & gps_sf2$id[i] == gps_sf2$id[i-1]){
+    x <- c(x,i)
+  }
+}
+gps_sf2 <- gps_sf2[-x,]
+row.names(gps_sf2) <- NULL
+datatable(head(gps_sf2,100))
+```
+<p>
+The next step is to then input employee details based on the id number for ease of identification during plotting.
+</p>
+```{r,echo=TRUE}
+car <- read.csv("_site/Methodology_files/car-assignments.csv")
+car$Name <- paste(car$FirstName,car$LastName,sep=" ")
+
+for(x in 1:nrow(gps_sf2)){
+  ifelse(gps_sf2$id[x] %in% car$CarID == TRUE,
+         {gps_sf2$Name[x] <- car$Name[which(car$CarID == gps_sf2$id[x])];
+         gps_sf2$Position[x] <- car$CurrentEmploymentTitle[which(car$CarID == gps_sf2$id[x])];
+         gps_sf2$Department[x] <- car$CurrentEmploymentType[which(car$CarID == gps_sf2$id[x])]},
+         {gps_sf2$Name[x] <- paste("Truck",gps_sf2$id[x],sep=" ");
+         gps_sf2$Position[x] <- paste("Truck",gps_sf2$id[x],sep=" ");
+         gps_sf2$Department[x] <-paste("Truck",gps_sf2$id[x],sep=" ")})}
+
+datatable(head(gps_sf2,100))
+```
+<p>
+With that out of the way, the next step is to then plot the map.
+</p>
+
+<h4> Map Plot </h4>
+<p>
+To begin plotting the map, the image file is first imported as a raster using the "raster" library.
+</p>
+```{r,echo=TRUE}
+bgmap <- raster('_site/Methodology_files/MC2-tourist.tif')
+```
+<p>
+And to plot the gps point, simply use the "tmap" library with the imported raster and the filtered GPS dataset. The dots will be color coded based on the "Name" column.
+</p>
+```{r,echo=TRUE}
+tm_shape(bgmap)+
+tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+tm_shape(gps_sf2) + tm_dots(col="Name") + tmap_options(max.categories = 50)
+```
