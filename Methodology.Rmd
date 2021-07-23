@@ -8,7 +8,6 @@ toc_depth: 3
 ```{r setup, include=FALSE}
 
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set("_site/Methodology_files")
 
 library(dplyr)
 library(knitr)
@@ -47,8 +46,8 @@ To begin with, this part will utilize the "cc_data" and "loyalty_data" csv files
 
 1. Incorrect data formats
 ```{r,echo=TRUE}
-cc <- read.csv("_site/Methodology_files/cc_data.csv")
-loyalty <- read.csv("_site/Methodology_files/loyalty_data.csv")
+cc <- read.csv("_site/cc_data.csv")
+loyalty <- read.csv("_site/loyalty_data.csv")
 print(str(cc))
 print(str(loyalty))
 ```
@@ -139,7 +138,7 @@ To start, the dataset is first imported.
 </p>
 
 ```{r,echo=TRUE}
-gps <- read.csv("_site/Methodology_files/gps.csv")
+gps <- read.csv("_site/gps.csv")
 nrow(gps)
 glimpse(gps)
 ```
@@ -187,7 +186,7 @@ datatable(head(gps_sf2,100))
 The next step is to then input employee details based on the id number for ease of identification during plotting.
 </p>
 ```{r,echo=TRUE}
-car <- read.csv("_site/Methodology_files/car-assignments.csv")
+car <- read.csv("_site/car-assignments.csv")
 car$Name <- paste(car$FirstName,car$LastName,sep=" ")
 
 for(x in 1:nrow(gps_sf2)){
@@ -210,12 +209,14 @@ With that out of the way, the next step is to then plot the map.
 To begin plotting the map, the image file is first imported as a raster using the "raster" library.
 </p>
 ```{r,echo=TRUE}
-bgmap <- raster('_site/Methodology_files/MC2-tourist.tif')
+bgmap <- raster('_site/MC2-tourist.tif')
 ```
 <p>
 And to plot the gps point, simply use the "tmap" library with the imported raster and the filtered GPS dataset. The dots will be color coded based on the "Name" column.
 </p>
 ```{r,echo=TRUE}
+tmap_mode("view")
+
 tm_shape(bgmap)+
 tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
 tm_shape(gps_sf2) + tm_dots(col="Name") + tmap_options(max.categories = 50)
