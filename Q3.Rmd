@@ -1,24 +1,36 @@
 ---
-title: "Untitled"
-description: |
-  A new article created using the Distill format.
-author:
-  - name: Nora Jones 
-    url: https://example.com/norajones
-    affiliation: Spacely Sprockets
-    affiliation_url: https://example.com/spacelysprokets
+title: "Credit Card and Loyalty Card Owners"
 date: "`r Sys.Date()`"
 output: distill::distill_article
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+library(DT)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web. 
+<p>
+This page will list the credit card and loyalty card owners as well as the likelihood level of the employee owning that card. The level is defined as:
 
-Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
+0 = Unable to find owner
 
+1 = A chance to be the owner of this card
+
+2 = Likely to own this card
+
+3 = Very likely to own this card
+</p>
+
+<p>
+A likelihood level of 1 would mean that the employee's location in a specific time matches the transaction time using a specific card. However, there is too many people in that interval as well as other timeframes that makes it hard to confidently determine that the card belongs to a specific employee. As the number of employees in a place reduces, the more easier it is to determine the card owner and as such the likelihood level will also increase.
+</p>
+<p>
+As for the level 0, reasons may arise which makes it unable to pinpoint who owns the card for sure. An additional column is added to explain the reason.
+</p>
+
+```{r,echo=FALSE}
+ownership <- read.csv("cardowners.csv")
+datatable(ownership)
+```
 
 
 

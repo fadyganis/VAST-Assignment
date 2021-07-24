@@ -1,0 +1,56 @@
+,cc,loy,Employee,likelihood,Reason
+1,8642,L2769,,0,"Location shows Truck 104 and 106 is in the location at the time, no additional information of who drives the truck is available"
+3,9220,L4063,,0,Truck 101 is shown to be at locations during purchases made by this card
+4,3506,L7761,,0,Truck 101 is shown to be at locations during purchases made by this card
+5,2276,L3317,,0,Truck 106 is shown to be at locations during purchases made by this card
+6,9614,NA,,0,Truck 101 is shown to be at locations during purchases made by this card
+7,3484,L2490,Varja Lagos,3,
+8,1874,L4424,Isande Borrasca,3,
+9,6816,L8148,Stenig Fusil,3,
+10,6901,L9363,Felix Resumir,2,Conflicting loyalty card number with other credit card entry
+11,2463,L6886,Willem Vasco-Pais,3,
+12,9683,L7291,Brand Tempestad,3,
+13,6691,L6267,,0,"All transactions in crowded places with routinity, while transaction in less crowded places have no gps data to back"
+14,1310,L8012,Marin Onda,3,
+15,9635,L3191,Ada Campo-Corrente,3,
+16,1415,L7783,Lars Azada,3,
+17,7819,L5259,Inga Ferro,1,"Location at Jan 16th at 8:26 PM is not directly at ""Albert's Fine Clothing"". Could be gps error or parking spot issue or could be at another place."
+18,2142,L9637,Kanon Hererro,2,"Location at Jan 12th at 3:53 PM is not directly at ""Albert's Fine Clothing"". Could be gps error or parking spot issue or could be at another place."
+19,9405,L3259,Hennie Osvaldo,3,
+20,5010,L2459,Sten Sanjorge Jr.,3,
+21,3492,L7814,Inga Ferro,2,Conflicting loyalty card number with other credit card entry
+22,9617,L5553,Birgitta Frente,3,
+23,9551,L5777,Minke Mies,3,
+24,7253,L1682,Bertrand Ovan,3,
+25,7384,NA,Sven Flecha,3,
+26,4795,L8566,Edvard Vann,3,
+27,5407,L4034,Isia Vann,3,
+28,7688,L4164,Ingrid Barranco,,
+29,4948,L9406,Felix Resumir,1,Conflicting loyalty card number with other credit card entry
+30,4434,L2169,Minke Mies,1,Conflicting loyalty card number with other credit card entry
+31,2540,NA,Elsa Orilla,,
+32,1321,L4149,,,
+33,2681,L1107,,,
+34,7889,L6119,,,
+35,8411,L6110,,,
+36,3547,L9362,,,
+37,2418,L9018,,,
+38,7108,NA,,,
+39,1286,L3288,,,
+40,5368,NA,,,
+41,8332,NA,,,
+42,7354,NA,,,
+43,6899,NA,,,
+44,8156,L5224,Vira Frente,3,
+45,3853,NA,,,
+46,9241,L3288,,,
+47,6895,L3366,,,
+48,1877,L3014,,,
+49,7117,L6417,,,
+50,8202,L2343,,,
+51,7792,L5756,,,
+52,4530,L8477,,,
+53,5921,L3295,,,
+54,8129,L8328,,,
+55,9735,L9633,,,
+56,9152,NA,,,
