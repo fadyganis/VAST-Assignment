@@ -14,10 +14,10 @@ library(hrbrthemes)
 library(plotly)
 library(clock)
 library(DT)
-cc <- read.csv("_site/Methodology_files/cc_data.csv")
-cc_loy_clean <- read.csv("_site/Methodology_files/cc_loy_clean.csv")
-cc_loy_union <- read.csv("_site/Methodology_files/cc_loy_union.csv")
-loyalty <- read.csv("_site/Methodology_files/loyalty_data.csv")
+cc <- read.csv("_site/cc_data.csv")
+cc_loy_clean <- read.csv("_site/cc_loy_clean.csv")
+cc_loy_union <- read.csv("_site/cc_loy_union.csv")
+loyalty <- read.csv("_site/loyalty_data.csv")
 
 
 ## Extract hour row from cc data
@@ -95,22 +95,7 @@ Simply looking at the 2 heatmaps first, some obvious patterns appear which is f&
 </p>
 <p>
 1. 	2 weekly transactions in the “Ahaggo Museum” with 2&3 people in one day (11th and 18th January) and 1 person the next (12th and 19th). It is also to note that the solo traveler will always come 1 hour after the group.
-
-2. Abila Zacharo has a total of 91 transactions over the dates but only 1 transaction happening at dinner time whereas every other locations are quite busy.
 </p>
-
-```{r,echo=FALSE}
-abilaZ_filt <- cc_loy_union %>% filter(is.na(H)==TRUE & location == "Abila Zacharo")
-
-abilaZ_filt <- abilaZ_filt[c("location","price","mdy","loyaltynum")]
-
-datatable(abilaZ_filt)
-
-```
-<p>
-looking at the table, there seems to be some transactions happening using only loyalty cards, and judging by the price it would seem that they are mostly groups with at the 18th a transaction is made by 73.25 of the local currency. As for the timing, they are all done in weekdays so it would be safe to assume they are either during lunchtime or in the evening similar to popular times of other restaurants.
-</p>
-
 <p>
 With the combined dataframes, the revenue acquired from each location can also be checked.
 </p>
@@ -138,33 +123,10 @@ plot8 <- ggplotly(p8, tooltip="text")
 ```{r,echo=FALSE,layout="1-body-outset",fig.height=7,fig.align='center'}
 ggplotly(p8,tooltip = "text")
 ```
-
-<p>
-3. Biggest red flag, someone spent 10000 on "Frydo's Autosupply and more" on 13th January.
-4. Also an anomaly, someone spent 1239 on "Albert's Fine Clothing" on 17th January.
-5. 18th January also saw the largest spending on "General Grocer", which was 477.6. This is an anomaly considering that other max transaction prices are around 270-285 at most.
-6. On 13th January, the biggest transaction happening in "Nationwide Refinery" was 204.58. This isn't necessarily a red flag. However, seeing as the regular max transaction revenue can be in the thousands this might be an indicator of a personal purchase instead of corporate.
-</p>
 <p>
 Looking at the revenue data, several anomalies can be identified immediately. As then could be investigated by looking at the data involved.
 </p>
-
-```{r,echo=FALSE}
-Frydos <- cc_loy_union %>% filter(location == "Frydos Autosupply n' More" & price == 10000)
-Frydos <- Frydos[c("location","price","mdy","last4ccnum","loyaltynum")]
-Albert <- cc_loy_union %>% filter(location == "Albert's Fine Clothing" & price == 1239.41)
-Albert <- Albert[c("location","price","mdy","last4ccnum","loyaltynum")]
-GenGroc <- cc_loy_union %>% filter(location == "General Grocer" & price == 477.6)
-GenGroc <- GenGroc[c("location","price","mdy","last4ccnum","loyaltynum")]
-Natref <- cc_loy_union %>% filter(location == "Nationwide Refinery"&price==204.58)
-Natref <- Natref[c("location","price","mdy","last4ccnum","loyaltynum")]
-datatable(Frydos)
-datatable(Albert)
-datatable(GenGroc)
-datatable(Natref)
-
-```
-
 <p>
-Looking at the data, there doesn't seem to be any noticeable pattern in those anomalies. However, it is important to keep in mind any anomalies to be able to further investigate in subsequent sections.
+2. Biggest red flag, someone spent 10000 on "Frydo's Autosupply and more" on 13th January.
+3. Also an anomaly, someone spent 1239 on "Albert's Fine Clothing" on 17th January.
 </p>

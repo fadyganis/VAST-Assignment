@@ -21,6 +21,8 @@ library(raster)
 library(sf)
 library(DT)
 library(tmap)
+library(lubridate)
+cc_loy_union <- read.csv("_site/cc_loy_union.csv")
 ```
 
 <p>
@@ -55,6 +57,8 @@ for(x in 1:nrow(gps_sf2)){
          gps_sf2$Position[x] <- paste("Truck",gps_sf2$id[x],sep=" ");
          gps_sf2$Department[x] <-paste("Truck",gps_sf2$id[x],sep=" ")})}
 
+emp_db <- car[c("Name","CurrentEmploymentType","CurrentEmploymentTitle")]
+
 bgmap <- raster('_site/MC2-tourist.tif')
 tmap_mode("view")
 
@@ -63,4 +67,155 @@ tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, 
 tm_shape(gps_sf2) + tm_dots(col="Name") + tmap_options(max.categories = 50)
 ```
 
+<p>
+From here, the discussion will be divided into confirmation of anomalies found in Q1 and anomalies found in this dataset itself.
+<p>
+
+<h2> Corroboration of Transaction Data </h2>
+<p>
+To recap, listed below are the anomalies found in the transaction data.
+</p>
+<p>
+1. The museum goers that go in group then a solo traveler one hour later every week.
+
+2. Very high spending on "Frydo's Autosupply and More"
+
+3. High spending in "Albert's Fine Clothing"
+</p>
+
+<h3> The Museum </h3>
+<p>
+The investigation begins by looking at the museum.
+</p>
+```{r,echo=FALSE}
+gps_sf3 <- gps_sf2
+gps_sf3
+gps_sf3$mdy <- format(gps_sf3$Timestamp,"%Y/%m/%d")
+gps_sf3$mdy <- date_time_parse(gps_sf3$mdy,zone="",format = "%Y/%m/%d")
+gps_sf3$H <- format(gps_sf3$Timestamp,"%H:%M:%S")
+mus_filt <- gps_sf3 %>% filter(mdy == "2014-01-11" | mdy == "2014-01-18"|mdy=="2014-01-12"|mdy == "2014-01-19")
+
+tm_shape(bgmap)+
+tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+tm_shape(mus_filt) + tm_dots(col="Name") + tmap_options(max.categories = 50)
+```
+<p>
+positions show no significant activities, all visitors are different people. It is to note that 3 of work in the same department (security). However, there is no confidence that this is suspicious. Also to note is the missing gps data for January 19th where there are supposed to be 2 people in the museum, this is marked up as error in data.
+</p>
+
+<h3> Frydo's Autosupply & More </h3>
+<p>
+Take a look at when the big transaction was made.
+</p>
+```{r}
+cc_loy_union[cc_loy_union$price==10000,]
+```
+<p>
+By knowing that this transaction happens in 19:20, the gps data can be filtered by the hour. For this case between 18:30 and 19:20 considering the time needed for arrival, negotiation and payment processing.
+</p>
+
+```{r}
+fry_filt <- gps_sf3 %>% filter(mdy == "2014-01-13" & H > "18:30:00" & H < "19:20:00")
+
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(fry_filt) + tm_dots(col="Name") + tmap_options(max.categories = 50)
+```
+
+<p>
+The graph shows that Minke Mies is the suspect of this transaction, They are shown to arrive at 18:00 and leave by 19:29. Looking at their credentials, something may be wrong.
+</p>
+```{r}
+emp_db[emp_db$Name=="Minke Mies",]
+```
+<p>
+Important to note that Minke works as a perimeter control.Also equally important is the fact that their job title has a pay grade logically possible for such a purchase nor the job description which tasks them with purchasing such an item for work. It is recommended that Minke is subjected to additional investigation.
+</p>
+
+<h4> Personnel Movement - Minke Mies </h4>
+```{r}
+minke <- gps_sf3 %>% filter(Name=="Minke Mies")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(minke) + tm_dots(col="Name") + tmap_options(max.categories = 50)
+```
+<p>
+Overall, there wasn't much suspicious movements happening with Minke. However, they were caught at parks at 3 am. More specifically at "Spetson Park" and "Taxiachen Park". This calls for a further investigation, more specifically in night times which will be discussed in the next section.
+</p>
+
+<h3> Albert's Fine Clothing </h3>
+<p>
+Same as before, the time of transaction is taken first.
+</p>
+```{r}
+cc_loy_union[cc_loy_union$location=="Albert's Fine Clothing" & cc_loy_union$price > 1000,]
+```
+```{r}
+albert <- gps_sf3 %>% filter(mdy == "2014-1-17" & H>"18:00:00"& H<"21:00:00")
+
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(albert) + tm_dots(col="Name") + tmap_options(max.categories = 50)
+```
+<p>
+Axel Calzas is the only employee in location, and as such would be the buyer of the 1000 transaction. Timeline also fits as he arrives in 18:25 and leaves at 19:46, 2 minutes after the payment. Working as a Hydraulic Technician, there is no tell that this is a suspicious activity.
+</p>
+
+<h2> Investigation of suspicious movements </h2>
+<h3> Priority Analysis </h3>
+<p>
+For this sub-section, the dataset is first filtered based on the priority of worker department. If it is to be assumed that Protector of Kronos is behind the dissapearances, then it can also be assumed that the main target would be either Executive personnel for being responsible in company activities or Engineering staff for being directly involved with the destruction of environment.
+</p>
+<p>
+This first plot shows the movements of the Executive personnels.
+</p>
+```{r}
+exec <- gps_sf3 %>% filter(Department == "Executive")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(exec) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+The graph shows that all executive personnel lives in the northeast housing block near "Ahaggo Museum" except for CEO Stan Sanjorge Jr. which does not have a permanent housing in Abila and instead stays in Chostus Hotel. It is also worth mentioning that the area is between "Spetson Park" and "Taxiachen Park", 2 locations with anomalies where security employee Minke Mies has been confirmed visiting at 3 AM.
+</p>
+
+<h4> Housing Block </h4>
+<p>
+To better identify suspicious movements in the area, the timeframe is set between 11 PM and 5 AM. This is done considering that parks and museums are in the vicinity, therefore employees that come to the area during "normal" times can be assumed to be visiting those places while people coming at the set timeframe would have a harder time explaining their purpose.
+</p>
+```{r}
+exec_night <- gps_sf3 %>% filter((H > "23:00:00" & H < "23:59:00")|(H > "00:00:00" & H < "05:00:00"))
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(exec_night) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+
+```
+
+<p>
+Several names pop up in the vicinity with different time. Listed below:
+
+1. Isia Vann with Loreto Bodrogi at January 7th 3 AM
+2. Minke Mies with Loreto Bodrogi at January 9th 3 AM
+3. Isia Vann with Hennie Osvaldo at January 11th 3 AM
+4. Minke Mies with Hennie Osvaldo at January 14th 3 AM
+5. Isande Borrasca at January 12th 11:26 PM and January 19th Midnight
+</p>
+
+```{r}
+emp_db[emp_db$Name == "Isia Vann"|emp_db$Name == "Loreto Bodrogi"|emp_db$Name == "Hennie Osvaldo"|emp_db$Name == "Minke Mies"|emp_db$Name == "Isande Borrasca",]
+```
+<p>
+Depending on the job description of perimeter control and site control, all 4 security employees may have a clear purpose on why they were there. However, the same cannot be said for Engineering staff Isande Borrasca. Further analysis should be made regarding this employee.
+</p>
+
+<h5> Personnel Movement - Isande Borrasca </h5>
+```{r}
+isande <- gps_sf3 %>% filter(Name=="Isande Borrasca")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(isande) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+Employee movement shows 3 clusters of location within the Executive housing block either early in the morning before work or after office hours. It is important authorities question more regarding the motive of these movements as well as check any relation employee has with the case.
+</p>
 

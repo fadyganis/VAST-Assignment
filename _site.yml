@@ -14,7 +14,7 @@ navbar:
     - text: "Q1"
       href: Q1.html
     - text: "Q2"
-      href: about.html
+      href: Q2.html
     - text: "Q3"
       href: about.html
     - text: "Q4"
