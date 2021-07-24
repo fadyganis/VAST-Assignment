@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Analysis of Movement Data"
 description: |
   A new article created using the Distill format.
 author:

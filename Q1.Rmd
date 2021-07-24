@@ -1,7 +1,5 @@
 ---
-title: "Q1"
-description: |
-  Checking the Popular places.
+title: "Analysis of Transaction Data"
 date: "`r Sys.Date()`"
 output: distill::distill_article
 ---
