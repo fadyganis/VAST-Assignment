@@ -10,27 +10,26 @@ library(DT)
 
 <p>
 This page will list the credit card and loyalty card owners as well as the likelihood level of the employee owning that card. The level is defined as:
-
-0 = Unable to find owner
-
-1 = A chance to be the owner of this card
-
-2 = Likely to own this card
-
-3 = Very likely to own this card
-</p>
-
-<p>
-A likelihood level of 1 would mean that the employee's location in a specific time matches the transaction time using a specific card. However, there is too many people in that interval as well as other timeframes that makes it hard to confidently determine that the card belongs to a specific employee. As the number of employees in a place reduces, the more easier it is to determine the card owner and as such the likelihood level will also increase.
 </p>
 <p>
-As for the level 0, reasons may arise which makes it unable to pinpoint who owns the card for sure. An additional column is added to explain the reason.
+0 = Cannot give any confidence of identifying a specific employee as an owner of a card
+</p>
+<p>
+1 = Positional data or time data may not be in-sync, could be person was in the vicinity or at the exact place but outside of the time window by a few minutes without anyone else being a possible answer. 
+</p>
+<p>
+2 = Cross-check of transaction data and positional data shows person was the only possible person to use this card at that time
+
+</p>
+<p>
+For a level 0, reasons may arise which makes it unable to pinpoint who owns the card for sure. An additional column is added to explain the reason.
 </p>
 
 ```{r,echo=FALSE}
 ownership <- read.csv("cardowners.csv")
 datatable(ownership)
 ```
+
 
 
 
