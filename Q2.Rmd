@@ -157,7 +157,7 @@ Axel Calzas is the only employee in location, and as such would be the buyer of 
 <h2> Investigation of suspicious movements </h2>
 <h3> Priority Analysis </h3>
 <p>
-For this sub-section, the dataset is first filtered based on the priority of worker department. If it is to be assumed that Protector of Kronos is behind the dissapearances, then it can also be assumed that the main target would be either Executive personnel for being responsible in company activities or Engineering staff for being directly involved with the destruction of environment.
+For this sub-section, the dataset is first filtered based on the priority of worker department. If it is to be assumed that Protector of Kronos is behind the dissapearances, then it can also be assumed that the main target would be Executive personnels for being responsible in company activities.
 </p>
 <p>
 This first plot shows the movements of the Executive personnels.
@@ -212,3 +212,62 @@ tm_shape(bgmap)+
 Employee movement shows 3 clusters of location within the Executive housing block either early in the morning before work or after office hours. It is important authorities question more regarding the motive of these movements as well as check any relation employee has with the case.
 </p>
 
+<h3> Individual Movement </h3>
+<p>
+To make it easier to see the movements, the map is divided based on the employees' departments.
+</p>
+
+<h4> Engineering </h4>
+```{r, echo=FALSE}
+engi <- gps_sf3 %>% filter(Department=="Engineering")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(engi) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+The biggest anomaly would be a gathering happening at January 10th late at night in the north housing block. All engineering employees were there except for Isande Borrasca which gps shows no log of her movement on that day.
+</p>
+
+<h4> Information Technology </h4>
+```{r, echo=FALSE}
+it <- gps_sf3 %>% filter(Department=="Information Technology")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(it) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+The IT department was also present in the late night gathering with the Engineering department, save for one person as well which was Sven Flecha. No gps data can be pulled to infer where he was during that time.
+</p>
+
+<h4> Security </h4>
+```{r, echo=FALSE}
+sec <- gps_sf3 %>% filter(Department=="Information Technology")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(sec) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+Outside of the anomalies discussed during the 'Proximity' section, no other anomalies were found.
+</p>
+
+<h4> Facilities </h4>
+```{r, echo=FALSE}
+fac <- gps_sf3 %>% filter(Department=="Information Technology")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(fac) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+Something to note would be Bertrand Ovan's trips to "Roberts and Sons" which could be a legal firm indicating a possible issue. But otherwise no suspicious movements have been found.
+</p>
+
+<h4> Executive </h4>
+```{r, echo=FALSE}
+exec <- gps_sf3 %>% filter(Department=="Information Technology")
+tm_shape(bgmap)+
+  tm_rgb(bgmap, r =1, g = 2, b = 3, alpha=NA, saturation = 1, interpolate = TRUE, max.value = 255) +
+  tm_shape(exec) + tm_dots(col="Name",size = 0.05) + tmap_options(max.categories = 50)
+```
+<p>
+Willem Vasco-Pais was shown to be in the Kronos Capitol on January 11th from 14:01 until 17:24. No unusual movements are found otherwise.
+</p>

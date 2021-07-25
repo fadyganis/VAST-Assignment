@@ -29,7 +29,9 @@ For a level 0, reasons may arise which makes it unable to pinpoint who owns the 
 ownership <- read.csv("cardowners.csv")
 datatable(ownership)
 ```
-
+<p>
+Important to note regarding conflicting loyalty card numbers. During data processing, the first instance of a purchase is what the loyalty card takes. However, during identification of owner, the date was randomly selected. Therefore, there is a chance that the conflicting owners would mean a possibility of a stolen credit card as the loyalty card belongs to the original owner then the other person uses it at a later date.
+</p>
 
 
 

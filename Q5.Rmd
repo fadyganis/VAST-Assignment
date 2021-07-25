@@ -1,0 +1,33 @@
+---
+title: "Recommendation for Authorities"
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+<p>
+In conclusion, the report finds that several findings should be investigated further by the authorities listed below.
+</p>
+
+<p>
+1. Minke Mies' large purchase at "Frydo's Autosupply & More"
+
+2. The security guard's job description in whether they were supposed to be in the vicinity of executives at 3 AM with one of them having a different job title than the rest.
+
+3. Isande Borrasca's motive in travelling early morning and after office hours.
+
+4. Sven Flecha's lack of movement data.
+
+5. Gathering between IT and Engineering employees on January 10th.
+
+6. Isande Borrasca and Sven Flecha's alibi during the employee gathering.
+
+7. Possibility of stolen credit cards.
+</p>
+
+
+
+
+
