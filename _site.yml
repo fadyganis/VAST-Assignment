@@ -18,7 +18,7 @@ navbar:
     - text: "Q3"
       href: Q3.html
     - text: "Q4"
-      href: about.html
+      href: 
     - text: "Q5"
       href: Q5.html
 output: distill::distill_article
